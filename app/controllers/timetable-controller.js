@@ -1,18 +1,32 @@
-routerApp.controller('ViewTimeController', function(ChangeInfor, URLServices ,$scope, $rootScope, $http, $state, $window) {
+routerApp.controller('ViewTimeController', function(ChangeInfor, URLServices, $scope, $rootScope, $http, $state, $window) {
+  // $rootScope.showLoad = "show-load";
   changeMainMenus(3);
   //change infor
   ChangeInfor.change('timetable');
   $scope.station = "Station";
   $scope.timeaway = "Time go";
   $scope.timearrivals = "Time return";
-  $scope.Trainjourneygo = "Train journey"
-  var check;
-  $scope.coachsTrain =[
-    {typeCoach: 'Bed super soft', price: 55000},
-    {typeCoach: 'Super soft', price: 42000},
-    {typeCoach: 'Soft', price: 25000},
-    {typeCoach: 'Seat soft', price: 33000}
-  ];
+  $scope.Trainjourneygo = "Train journey";
+  $scope.show = true;
+
+  $scope.name = ["SE11", "SE12"];
+  $scope.selected_option = $scope.name[0];
+  getStationList();
+
+  var check = "journey";
+  $scope.coachsTrain = [{
+    typeCoach: 'Bed super soft',
+    price: 23000
+  }, {
+    typeCoach: 'Super soft',
+    price: 40000
+  }, {
+    typeCoach: 'Soft',
+    price: 52000
+  }, {
+    typeCoach: 'Seat',
+    price: 25000
+  }];
 
   function showJourney() {
     $scope.station = "Station";
@@ -99,58 +113,76 @@ routerApp.controller('ViewTimeController', function(ChangeInfor, URLServices ,$s
   $scope.north_sound = function() {
     // getStationList("Ha Noi-Sai Gon");
     check = "journey";
-    $scope.name = ["SE1", "SE2", "HSG1", "SE11", "SE12"];
+    $scope.name = ["SE11", "SE12"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.hanoi_danang = function() {
     // getStationList("Ha Noi-Da Nang");
     check = "journey";
-    $scope.name = ["SE3", "SE4", "SE13", "SE33"];
+    $scope.name = ["SE4", "SE13"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.hanoi_laocai = function() {
     // getStationList("Ha Noi-Lao Cai");
     check = "journey";
-    $scope.name = ["HYB1", "HYB2", "SE5", "SP7"];
+    $scope.name = ["HYB1", "HYB2"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.Math = window.Math;
   $scope.hanoi_haiphong = function() {
     // getStationList("Ha Noi-Hai Phong");
     check = "journey";
-    $scope.name = ["HP3", "LP1", "LP2", "SE7"];
+    $scope.name = ["LP1", "LP2"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
 
   //
   $scope.hanoi_dongdang = function() {
     // getStationList("Ha Noi-Dong Dang");
     check = "journey";
-    $scope.name = ["RD1", "RD2", "HDD1", "HDD4"];
+    $scope.name = ["RD1", "HDD1"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.hanoi_thainguyen = function() {
     // getStationList("Ha Noi-Thai Nguyen");
     check = "journey";
-    $scope.name = ["TNH2", "HNT1"];
+    $scope.name = ["HNT2", "HNT1"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
 
   $scope.saigon_danang = function() {
     // getStationList("Sai Gon-Da Nang");
     check = "journey";
-    $scope.name = ["SDN1", "SDN2", "HRN1", "DVN2"];
+    $scope.name = ["SDN1", "SDN2"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.saigon_phanthiet = function() {
     // getStationList("Sai Gon-Phan Thiet");
     check = "journey";
     $scope.name = ["SPT1", "SPT2"];
+    $scope.selected_option = $scope.name[0];
+    getStationList();
   };
   //
   $scope.saigon_quinhon = function() {
     // getStationList("Sai Gon-Quy Nhon");
     check = "journey";
     $scope.name = ["SE25", "SE26"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
   };
 
 
@@ -159,55 +191,73 @@ routerApp.controller('ViewTimeController', function(ChangeInfor, URLServices ,$s
   $scope.Price_north_sound = function() {
     // getListPrice("Ha Noi-Sai Gon");
     check = "price";
-    $scope.name = ["SE1", "SE2", "HSG1", "SE11", "SE12"];
+    $scope.name = ["SE11", "SE12"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
   };
 
   $scope.Price_hanoi_danang = function() {
     check = "price";
-    $scope.name = ["SE3", "SE4", "SE13", "SE33"];
+    $scope.name = ["SE4", "SE13"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Ha Noi-Da Nang");
   };
   //
   $scope.Price_hanoi_laocai = function() {
     check = "price";
-    $scope.name = ["HYB1", "HYB2", "SE5", "SP7"];
+    $scope.name = ["HYB1", "HYB2"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Ha Noi-Lao Cai");
   };
   //
   $scope.Price_hanoi_haiphong = function() {
     check = "price";
-    $scope.name = ["HP3", "LP1", "LP2", "SE7"];
+    $scope.name = ["LP1", "LP2"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Ha Noi-Hai Phong");
   };
   //
   $scope.Price_hanoi_dongdang = function() {
     check = "price";
-    $scope.name = ["RD1", "RD2", "HDD1", "HDD4"];
+    $scope.name = ["RD1", "HDD1"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Ha Noi-Dong Dang");
   };
   //
   $scope.Price_hanoi_thainguyen = function() {
     check = "price";
-    $scope.name = ["TNH2", "HNT1"];
+    $scope.name = ["HNT2", "HNT1"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Ha Noi-Thai Nguyen");
   };
 
   //
   $scope.Price_saigon_danang = function() {
     check = "price";
-    $scope.name = ["SDN1", "SDN2", "HRN1", "DVN2"];
+    $scope.name = ["SDN1", "SDN2"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Sai Gon-Da Nang");
   };
   //
   $scope.Price_saigon_phanthiet = function() {
     check = "price";
     $scope.name = ["SPT1", "SPT2"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Sai Gon-Phan Thiet");
   };
   //
   $scope.Price_saigo_quinhon = function() {
     check = "price";
     $scope.name = ["SE25", "SE26"];
+    $scope.selected_option = $scope.name[0];
+    getListPrice();
     // getListPrice("Sai Gon-Quy Nhon");
   };
 });

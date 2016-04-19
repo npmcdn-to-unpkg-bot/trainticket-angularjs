@@ -53,11 +53,11 @@
               <td>{{inforticket}}</td>
               <td>{{datebuy | date:'yyyy-MM-dd HH:mm:ss'}}</td>
               <td>{{state}}</td>
-              <td>{{money | separatorThousand}}vnđ</td>
+              <td>{{money}}</td>
             </tr>
             <tr>
               <td colspan="7" style="text-align: right;"><b>Total</b></td>
-              <td>{{TotalPrice | separatorThousand}}vnđ</td>
+              <td>{{TotalPrice}}</td>
             </tr>
 
           </tbody>
@@ -133,6 +133,24 @@
   </div>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 bt_print">
 <button type="button" class="btn btn-success bt_print" data-toggle="modal" data-target="#myModal" ng-click = "delete()"><span class="fa fa-trash"></span><b> Delete</b></button>
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>This is a small modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
   </div>
 </div>
   <div class="row">
