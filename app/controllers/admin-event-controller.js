@@ -5,7 +5,7 @@ routerApp.controller('AdminEventController', function($scope, $http, $state, Sho
         .success(function(response) {
             if (response.Message != "DataEmpty") {
                 $scope.tabs = response;
-                console.log(response);
+                //console.log(response);
             }
             $scope.obs = [];
             $scope.deleteEvent = function(tab) {
@@ -38,7 +38,7 @@ routerApp.controller('AdminEventController', function($scope, $http, $state, Sho
                                     $scope.tabs = eventObject;
                                 })
                                 .error(function(response) {
-                                    console.log(response);
+                                    //console.log(response);
                                     toastr.success(response.Error);
                                 });
                             dialog.close();
@@ -46,24 +46,24 @@ routerApp.controller('AdminEventController', function($scope, $http, $state, Sho
                     }]
                 });
             }
-            // if (response.Message != "DataEmpty") {
-            // $scope.editEvent = function(tab) {
-            //     var dateBegin = new Date(Number(tab.timeBegin));
-            //     var dateEnd =  new Date(Number(tab.timeEnd));
-            //     console.log(dateBegin);
-            //     autoDate(dateBegin,'timeBegin');
-            //     autoDate(dateEnd,'timeEnd');
-            //     $scope.idEvent = tab._id;
-            //     $scope.content = tab.content;
-            //     // $scope.timeBegin = tab.timeBegin;
-            //     // $scope.timeEnd = tab.timeEnd;
-            //     $scope.obs = tab.objects;
-            //     $scope.image = tab.image;
-            //     $scope.nameEvent = tab.name;
-            //   }
-            // }
+            if (response.Message != "DataEmpty") {
+            $scope.editEvent = function(tab) {
+                var dateBegin = new Date(Number(tab.timeBegin));
+                var dateEnd =  new Date(Number(tab.timeEnd));
+                //console.log(dateBegin);
+                autoDate(dateBegin,'timeBegin');
+                autoDate(dateEnd,'timeEnd');
+                $scope.idEvent = tab._id;
+                $scope.content = tab.content;
+                // $scope.timeBegin = tab.timeBegin;
+                // $scope.timeEnd = tab.timeEnd;
+                $scope.obs = tab.objects;
+                $scope.image = tab.image;
+                $scope.nameEvent = tab.name;
+              }
+            }
             $scope.chooseType = function() {
-                console.log($scope.selectType);
+                //console.log($scope.selectType);
                 var checkSelect = $scope.selectType;
                 if (typeof checkSelect != 'undefined') {
                     document.getElementById('price').value = $scope.selectType;
@@ -79,7 +79,7 @@ routerApp.controller('AdminEventController', function($scope, $http, $state, Sho
                     };
                     var newObjects = [];
                     newObjects[0] = object;
-                    console.log($scope.obs.length);
+                    //console.log($scope.obs.length);
                     var lengthObs = $scope.obs.length + 1;
                     if (lengthObs > 1) {
                         for (i = 1; i < lengthObs; i++) {
@@ -87,13 +87,13 @@ routerApp.controller('AdminEventController', function($scope, $http, $state, Sho
                         }
                     }
                     $scope.obs = newObjects;
-                    console.log($scope.obs);
+                    //console.log($scope.obs);
                 }
             }
             $scope.saveEvent = function() {
                 var msecTimeBegin = Date.parse($scope.timeBegin);
                 var msecTimeEnd = Date.parse($scope.timeEnd);
-                console.log(msecTimeBegin);
+                //console.log(msecTimeBegin);
                 var eventUpdate = {
                     _id: $scope.idEvent,
                     name: $scope.nameEvent,

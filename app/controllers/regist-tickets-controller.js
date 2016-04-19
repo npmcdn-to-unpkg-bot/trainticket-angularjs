@@ -135,7 +135,7 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
   *  value   dev: show log on browser.
   *  				other value is hide.
   */
-  var envi = 'dev';
+  var envi = 'product';
   //change information of page
   ChangeInfor.change('register');
   /*

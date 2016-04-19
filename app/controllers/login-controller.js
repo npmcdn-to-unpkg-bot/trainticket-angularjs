@@ -50,7 +50,7 @@ routerApp.controller('LoginController', function(ChangeInfor,toastr, ShowLog, UR
             .success(function(response) {
                 var user = response;
                 $cookieStore.put('userLogin', user);
-                console.log(user.nameqưe);
+                //console.log(user.nameqưe);
                 $scope.$emit('loginAdmin', {
                     userName : user.name
 

@@ -4,7 +4,7 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
   $scope.activeInfor = "li-active-menu";
   ShowLog.show($scope.activeInfor, envi);
   // show
-  var envi = 'dev';
+  var envi = 'product';
   ChangeInfor.change('information');
 
   ShowLog.show($scope.activeInfor, envi);

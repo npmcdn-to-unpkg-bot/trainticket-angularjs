@@ -14,7 +14,7 @@ routerApp.controller('ContactController',  function(ChangeInfor,URLServices,  Sh
   // the customer answer for the question
   $scope.answer = '';
   // enviroment
-  var envi = 'dev';
+  var envi = 'product';
   // change acitve menu when customer edit
   changeMainMenus(5);
   $scope.send =  function(){

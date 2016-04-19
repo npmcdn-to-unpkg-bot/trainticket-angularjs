@@ -3,7 +3,7 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
     ChangeInfor.change('main');
     // change acitve menu when customer edit
     changeMainMenus(0);
-    var envi = 'dev';
+    var envi = 'product';
     $scope.journey = {
         "listTrain": [],
         "fromStation": '',

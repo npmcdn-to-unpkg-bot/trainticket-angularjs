@@ -1,7 +1,7 @@
 
 routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowLog, $scope, $rootScope, $cookieStore, $http, $state, toastr){
 
-  var envi =  'dev';
+  var envi =  'product';
   //menu
   $scope.activeHome = "li-active-menu";
   $scope.activeInfor = "";
@@ -82,7 +82,6 @@ routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowL
     // });
     // tets modal login
     $scope.loginUser = function() {
-      console.log($scope.userName +" "+ $scope.userPass );
             $http
                 .post(URLServices.getURL('admin'), {
                     name: $scope.userName,

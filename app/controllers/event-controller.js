@@ -26,7 +26,7 @@ routerApp.controller('EventController', function(ChangeInfor, ShowLog, URLServic
                 $scope.content = tab.content;
                 $scope.dateBeginEvent = new Date(Number(tab.timeBegin));
                 $scope.dateEndEvent =  new Date(Number(tab.timeEnd));
-                console.log(tab.objects.length);
+                //console.log(tab.objects.length);
                 for (i = 0; i < tab.objects.length; i++) {
                     var type = tab.objects[i].type;
                     var price = tab.objects[i].price;

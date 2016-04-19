@@ -19,7 +19,7 @@ routerApp.controller('AdminProfileController',  function(URLServices, $scope, $h
                  })
                  .error(function(status) {
                      BootstrapDialog.alert(status.Error);
-                     console.log('loi' + $scope.oldPass);
+                     //console.log('loi' + $scope.oldPass);
                  });
          }
      };
