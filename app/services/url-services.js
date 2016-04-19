@@ -9,11 +9,11 @@ routerApp.service('URLServices', function() {
           case 'train':
                 return urlPage+"train";
           case 'event':
-                return urlPage3+"eventtrain";
+                return urlPage+"eventtrain";
           case 'mail':
                 return urlPage+"mail";
           case 'admin':
-                return urlPage3+"admin";
+                return urlPage+"admin";
         }
     }
 });
