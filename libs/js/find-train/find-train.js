@@ -79,7 +79,3 @@ function autoDate(dateCurrent, element) {
     }
     document.getElementById(element).value = dateCurrent.getDate()+' '+textMonth +', '+dateCurrent.getFullYear();
 }
-var dateToTemp = new Date();
-dateToTemp.setDate(dateToTemp.getDate() + 1);
-autoDate(new Date(),'dateGo');
-autoDate(dateToTemp,'dateTo');

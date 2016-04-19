@@ -155,4 +155,8 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
                 });
       }
     };
+    var dateToTemp = new Date();
+    dateToTemp.setDate(dateToTemp.getDate() + 1);
+    autoDate(new Date(),'dateGo');
+    autoDate(dateToTemp,'dateTo');
 });
