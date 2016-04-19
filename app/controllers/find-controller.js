@@ -31,7 +31,9 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
     $scope.disbaleRoundTripB = function() {
             $scope.activeButton = false;
         }
-        var point = ['Quy Nhon', 'Sai Gon', 'Phan Thiet', 'Da Nang', 'Ha Noi'];
+        var point = ["Ha Noi","Sai Gon" ,"Nha Trang","Quy Nhon","Da Nang","Tam Ky","Hue","Dong Hoi","Quang Tri"
+                        ,"Nam Dinh","Vinh" ,"Thanh Hoa","Ha Long","Mao Khue","Bien Hoa","Tuy Hoa","Dieu Tri"
+                        ,"Quy Nhon","Quang Ngai","Bong Son","Binh Thuan","Phan Thiet"];
        var checkInputGo = false;
        var checkInputTo = false;
        $scope.blurInputGo = function() {

@@ -4,7 +4,9 @@ $(function(){
         minChars: 1,
         source: function(term, suggest){
             term = term.toLowerCase();
-            var choices = ['Quy Nhon', 'Sai Gon', 'Phan Thiet', 'Da Nang', 'Ha Noi'];
+            var choices = ["Ha Noi","Sai Gon" ,"Nha Trang","Quy Nhon","Da Nang","Tam Ky","Hue","Dong Hoi","Quang Tri"
+                            ,"Nam Dinh","Vinh" ,"Thanh Hoa","Ha Long","Mao Khue","Bien Hoa","Tuy Hoa","Dieu Tri"
+                            ,"Quy Nhon","Quang Ngai","Bong Son","Binh Thuan","Phan Thiet"];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
@@ -17,7 +19,9 @@ $(function(){
         minChars: 1,
         source: function(term, suggest){
             term = term.toLowerCase();
-            var choices = ['Quy Nhon', 'Sai Gon', 'Phan Thiet', 'Da Nang', 'Ha Noi'];
+            var choices = ["Ha Noi","Sai Gon" ,"Nha Trang","Quy Nhon","Da Nang","Tam Ky","Hue","Dong Hoi","Quang Tri"
+                            ,"Nam Dinh","Vinh" ,"Thanh Hoa","Ha Long","Mao Khue","Bien Hoa","Tuy Hoa","Dieu Tri"
+                            ,"Quy Nhon","Quang Ngai","Bong Son","Binh Thuan","Phan Thiet"];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
