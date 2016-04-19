@@ -1,20 +1,19 @@
 routerApp.service('URLServices', function() {
   var urlPage   = "http://traintickets-61869.onmodulus.net/";
   var urlPage2  = "https://sheltered-hollows-98630.herokuapp.com/";
+  var urlPage3  = "http://traintickets-61882.onmodulus.net/";
     this.getURL = function (name) {
         switch (name) {
           case 'customer':
               return urlPage+"customer";
-            break;
           case 'train':
                 return urlPage+"train";
-              break;
           case 'event':
-                return urlPage+"eventtrain";
-              break;
+                return urlPage3+"eventtrain";
           case 'mail':
                 return urlPage+"mail";
-              break;
+          case 'admin':
+                return urlPage3+"admin";
         }
     }
 });

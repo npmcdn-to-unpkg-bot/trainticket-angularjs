@@ -34,8 +34,7 @@ var $input = $('.datepicker').pickadate({
     closeOnClear: false,
 });
 var picker = $input.pickadate('picker');
-function autoDate() {
-    var dateCurrent = new Date();
+function autoDate(dateCurrent, element) {
     var month = dateCurrent.getMonth();
     var textMonth;
     switch (month) {
@@ -78,7 +77,9 @@ function autoDate() {
         default:
             textMonth = 'July';
     }
-    document.getElementById('dateGo').value = dateCurrent.getDate()+' '+textMonth +', '+dateCurrent.getFullYear();
-    document.getElementById('dateTo').value = dateCurrent.getDate()+' '+textMonth +', '+dateCurrent.getFullYear();
+    document.getElementById(element).value = dateCurrent.getDate()+' '+textMonth +', '+dateCurrent.getFullYear();
 }
-autoDate();
+var dateToTemp = new Date();
+dateToTemp.setDate(dateToTemp.getDate() + 1);
+autoDate(new Date(),'dateGo');
+autoDate(dateToTemp,'dateTo');

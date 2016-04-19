@@ -1,5 +1,5 @@
 
-routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowLog, $scope, $rootScope,  $http, $state, toastr){
+routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowLog, $scope, $rootScope, $cookieStore, $http, $state, toastr){
 
   var envi =  'dev';
   //menu
@@ -12,6 +12,8 @@ routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowL
   $scope.listTickets = [];
   $scope.listEvent = [];
   $rootScope.showLoad = "hide-load";
+  var getUser = $cookieStore.get('userLogin');
+  $scope.checkAdmin = '';
   // time hide toastr
   var timOutToastr = 10000;
   // ShowLog.show('showLoad',envi);
@@ -25,38 +27,7 @@ routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowL
    $scope.$on('eventList', function (event, args) {
     $scope.listEvent = args.listEvent;
     });
-  // ShowLog.show('test show log services', envi);
-  $scope.changeAcitveMenu = function(index){
-    // reset
-    ShowLog.show('call main menu', envi);
-    $scope.activeHome = "";
-    $scope.activeInfor = "";
-    $scope.activeEvent = "";
-    $scope.activeTimetable = "";
-    $scope.activeGuide = "";
-    $scope.activeContact= "";
-    switch (Number(index)) {
-      case 1:
-        $scope.activeHome = "li-active-menu";
-        break;
-      case 2:
-        $scope.activeInfor = "li-active-menu";
-        break;
-      case 3:
-        $scope.activeEvent = "li-active-menu";
-        break;
-      case 4:
-        $scope.activeTimetable = "li-active-menu";
-        break;
-      case 5:
-        $scope.activeGuide = "li-active-menu";
-        break;
-      case 6:
-        $scope.activeContact = "li-active-menu";
-        break;
 
-    }
-  }
   // check connect to server
   var autoCheckServer = function(){
     ShowLog.show(URLServices.getURL('train'), envi);
@@ -74,5 +45,82 @@ routerApp.controller('MainController',  function(URLServices, ChangeInfor, ShowL
   }
   // run when app run
   autoCheckServer();
-  ShowLog.show('call main', envi);
+  // ShowLog.show('call main', envi);
+  if (typeof getUser == 'undefined') {
+        $scope.checkAdmin = 0;
+    } else {
+        $scope.checkAdmin = 1;
+    }
+    //check amdin and set style for button login
+    function showAdminLogin() {
+        if ($scope.checkAdmin == 0) {
+            styleLog('Login', 'fa fa-sign-in', false);
+        } else {
+            styleLog('Logout', 'fa fa-sign-out', true);
+        }
+    }
+    showAdminLogin();
+
+    function deleteCookie() {
+        if ($scope.checkAdmin != 1) {
+            // $(window).unload(function() {
+            //     $cookieStore.remove('userLogin');
+            // });
+            setTimeout(function() {
+                $cookieStore.remove('userLogin');
+                $scope.checkAdmin = 0;
+                styleLog('Login', 'fa fa-sign-in', false);
+            }, 300000);
+        }
+    }
+    deleteCookie();
+    // disable auto delete cookies
+    // $scope.$on('changeTitleLog', function(event, args) {
+    //     $scope.switchLog = args.css;
+    //     $scope.titleLog = args.title;
+    //     $scope.showAdmin = args.showAdmin;
+    // });
+    // tets modal login
+    $scope.loginUser = function() {
+      console.log($scope.userName +" "+ $scope.userPass );
+            $http
+                .post(URLServices.getURL('admin'), {
+                    name: $scope.userName,
+                    pass: $scope.userPass
+                })
+                .success(function(response) {
+                    var user = response;
+                    $cookieStore.put('userLogin', user);
+                    $scope.checkAdmin = 1;
+                    styleLog('Logout', 'fa fa-sign-out', true);
+                    $("#formLogin").modal('hide');
+                    $state.go('main.admin.profile');
+                })
+                .error(function(status, data) {
+                    if (data == null) {
+                        toastr.error("Systems are error! Please you come back later");
+                    } else {
+                        toastr.error(status.Error);
+                    }
+                });
+        }
+        //  set style for button login, Logout
+    function styleLog(title, css, admin) {
+        $scope.showAdmin = admin;
+        $scope.switchLog = css;
+        $scope.titleLog = title;
+    }
+    //show form login
+    $scope.openLogin = function() {
+        if ($scope.checkAdmin == 0) {
+            $("#formLogin").modal();
+        } else {
+            $("#formLogin").modal('hide');
+            $cookieStore.remove('userLogin');
+            $scope.checkAdmin = 0;
+            styleLog('Login', 'fa fa-sign-in', false);
+            $state.go('main.home');
+        }
+    }
+
 });

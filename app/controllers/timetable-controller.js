@@ -1,385 +1,213 @@
 routerApp.controller('ViewTimeController', function(ChangeInfor, URLServices ,$scope, $rootScope, $http, $state, $window) {
-  // $rootScope.showLoad = "show-load";
-  $scope.station = "Station";
-  $scope.timeaway = "Time away";
-  $scope.timearrivals = "Time arrivals";
-  $scope.Trainjourneygo = "Train journey go";
+  changeMainMenus(3);
   //change infor
   ChangeInfor.change('timetable');
-  $scope.Math = window.Math;
+  $scope.station = "Station";
+  $scope.timeaway = "Time go";
+  $scope.timearrivals = "Time return";
+  $scope.Trainjourneygo = "Train journey"
+  var check;
+  $scope.coachsTrain =[
+    {typeCoach: 'Bed super soft', price: 55000},
+    {typeCoach: 'Super soft', price: 42000},
+    {typeCoach: 'Soft', price: 25000},
+    {typeCoach: 'Seat soft', price: 33000}
+  ];
+
   function showJourney() {
     $scope.station = "Station";
-    $scope.timeaway = "Time away";
-    $scope.timearrivals = "Time arrivals";
+    $scope.timeaway = "Time go";
+    $scope.timearrivals = "Time return";
     $scope.hide = false;
     $scope.show = true;
     $scope.connect = "";
-    $scope.Trainjourneygo = "Train journey go"
+    $scope.Trainjourneygo = "Train journey"
   };
 
   function changeTitle() {
     $scope.station = "From station";
-    $scope.timeaway = "To station";
     $scope.timearrivals = "Price";
     $scope.hide = true;
     $scope.show = false;
     $scope.connect = " - ";
     $scope.Trainjourneygo = "Price journey"
   };
-  // Train Journey
-  $scope.north_sound = function() {
+  // change option
+  $scope.changListTrain = function() {
+    if (check == "journey") {
+      getStationList();
+    } else {
+      if (check = "price") {
+        getListPrice();
+      }
+    }
+  }
+
+  // get list station when optionlist change
+  function getStationList() {
+    $rootScope.showLoad = "show-load";
     $http.get(URLServices.getURL('train')).success(function(response) {
+      $rootScope.showLoad = "hide-load";
       $scope.train = response.data;
-      $scope.listId = [];
       $scope.listJourney = [];
       for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Sai Gon") {
-          $scope.listId.push(response[i]._id);
-         for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
+        if (response[i]._id == $scope.selected_option) {
+          $scope.Name = response[i].title;
+          for (j = 0; j < response[i].trainJourney.length; j++) {
+            $scope.listJourney[j] = [
+              response[i].trainJourney[j],
+              response[i].trainJourneyReturn[response[i].trainJourneyReturn.length - j - 1]
+            ];
           }
         }
       }
       showJourney();
     }).error(function(response) {
-      console.log(response);
+      $rootScope.showLoad = "hide-load";
+      BootstrapDialog.show({
+        title: 'Warrning',
+        message: 'No train was found'
+      });
     });
+  };
+
+
+  // Get list peice of train.
+  function getListPrice() {
+    $rootScope.showLoad = "show-load";
+    $http.get(URLServices.getURL('train')).success(function(response) {
+      $rootScope.showLoad = "hide-load";
+      $scope.train = response.data;
+      for (i = 0; i < response.length; i++) {
+        if (response[i]._id == $scope.selected_option) {
+          $scope.coachsTrain = response[i].coachs;
+          $scope.Name = response[i].title;
+          $scope.listJourney = response[i].pricesDistance;
+        }
+      }
+      changeTitle();
+    }).error(function(response) {
+      $rootScope.showLoad = "hide-load";
+      BootstrapDialog.show({
+        title: 'Warrning',
+        message: 'No train was found'
+      });
+    });
+  }
+
+  // Train Journey
+  $scope.north_sound = function() {
+    // getStationList("Ha Noi-Sai Gon");
+    check = "journey";
+    $scope.name = ["SE1", "SE2", "HSG1", "SE11", "SE12"];
   };
   //
   $scope.hanoi_danang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Da Nang") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Ha Noi-Da Nang");
+    check = "journey";
+    $scope.name = ["SE3", "SE4", "SE13", "SE33"];
   };
   //
   $scope.hanoi_laocai = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Lao Cai") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Ha Noi-Lao Cai");
+    check = "journey";
+    $scope.name = ["HYB1", "HYB2", "SE5", "SP7"];
   };
   //
+  $scope.Math = window.Math;
   $scope.hanoi_haiphong = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Hai Phong") {
-          $scope.listId.push(response[i]._id);
-
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Ha Noi-Hai Phong");
+    check = "journey";
+    $scope.name = ["HP3", "LP1", "LP2", "SE7"];
   };
+
   //
   $scope.hanoi_dongdang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Dong Dang") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Ha Noi-Dong Dang");
+    check = "journey";
+    $scope.name = ["RD1", "RD2", "HDD1", "HDD4"];
   };
   //
   $scope.hanoi_thainguyen = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Thai Nguyen") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Ha Noi-Thai Nguyen");
+    check = "journey";
+    $scope.name = ["TNH2", "HNT1"];
   };
   //
-  $scope.kep_halong = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Kep-Ha Long") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
-  };
-  //
+
   $scope.saigon_danang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Da Nang") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Sai Gon-Da Nang");
+    check = "journey";
+    $scope.name = ["SDN1", "SDN2", "HRN1", "DVN2"];
   };
   //
   $scope.saigon_phanthiet = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Phan Thiet") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Sai Gon-Phan Thiet");
+    check = "journey";
+    $scope.name = ["SPT1", "SPT2"];
   };
   //
   $scope.saigon_quinhon = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      console.log("response");
-      $scope.train = response.data;
-      $scope.listId = [];
-      $scope.listJourney = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Quy Nhon") {
-          $scope.listId.push(response[i]._id);
-          for (j = 0; j < response[i].trainJourney.length; j++) {
-            $scope.listJourney[j] = [response[i].trainJourney[j], response[i].trainJourneyReturn[j]];
-          }
-        }
-      }
-      showJourney();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getStationList("Sai Gon-Quy Nhon");
+    check = "journey";
+    $scope.name = ["SE25", "SE26"];
   };
+
 
   // Price Train journey
 
   $scope.Price_north_sound = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Sai Gon") {
-          // $scope.coachsTrain = response[i].coachs;
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    // getListPrice("Ha Noi-Sai Gon");
+    check = "price";
+    $scope.name = ["SE1", "SE2", "HSG1", "SE11", "SE12"];
   };
 
   $scope.Price_hanoi_danang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Da Nang") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["SE3", "SE4", "SE13", "SE33"];
+    // getListPrice("Ha Noi-Da Nang");
   };
   //
   $scope.Price_hanoi_laocai = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Lao Cai") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["HYB1", "HYB2", "SE5", "SP7"];
+    // getListPrice("Ha Noi-Lao Cai");
   };
   //
   $scope.Price_hanoi_haiphong = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Hai Phong") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["HP3", "LP1", "LP2", "SE7"];
+    // getListPrice("Ha Noi-Hai Phong");
   };
   //
   $scope.Price_hanoi_dongdang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Dong Dang") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["RD1", "RD2", "HDD1", "HDD4"];
+    // getListPrice("Ha Noi-Dong Dang");
   };
   //
   $scope.Price_hanoi_thainguyen = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Ha Noi-Thai Nguyen") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["TNH2", "HNT1"];
+    // getListPrice("Ha Noi-Thai Nguyen");
   };
-  //
-  $scope.Price_kep_halong = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Kep-Ha Long") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
-  };
+
   //
   $scope.Price_saigon_danang = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Da Nang") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["SDN1", "SDN2", "HRN1", "DVN2"];
+    // getListPrice("Sai Gon-Da Nang");
   };
   //
   $scope.Price_saigon_phanthiet = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Phan Thiet") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["SPT1", "SPT2"];
+    // getListPrice("Sai Gon-Phan Thiet");
   };
   //
   $scope.Price_saigo_quinhon = function() {
-    $http.get(URLServices.getURL('train')).success(function(response) {
-      console.log("response");
-      $scope.train = response.data;
-      $scope.listId = [];
-      for (i = 0; i < response.length; i++) {
-        if (response[i].title == "Sai Gon-Quy Nhon") {
-          $scope.listId.push(response[i]._id);
-          $scope.listJourney = response[i].pricesDistance;
-        }
-      }
-      changeTitle();
-    }).error(function(response) {
-      console.log(response);
-    });
+    check = "price";
+    $scope.name = ["SE25", "SE26"];
+    // getListPrice("Sai Gon-Quy Nhon");
   };
 });

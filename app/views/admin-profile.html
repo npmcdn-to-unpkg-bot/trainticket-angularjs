@@ -20,8 +20,8 @@
   </table>
   </div>
   <label class="col-xs-12 col-ms-12 col-md-3 col-lg-3">Change Password:</label>
-  <input id="iput-old-pw" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="Old...">
-  <input id="iput-new-pw" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="New...">
-  <input id="iput-new-pw-again" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="New...">
-  <input onclick="changePassWord()" style='margin-left: 5px; 'class="col-xs-12 col-ms-12 col-md-2 col-lg-2" type="button" value="Change">
+  <input ng-model='oldPass' id="iput-old-pw" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="Old...">
+  <input ng-model='newPass' id="iput-new-pw" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="New...">
+  <input ng-model='confirm' id="iput-new-pw-again" style='margin-left: 5px;'class="col-xs-12 col-ms-6 col-md-2 col-lg-2" type="password" placeholder="Confirm...">
+  <button ng-click="changePassword()" style='margin-left: 5px; 'class="col-xs-12 col-ms-12 col-md-2 col-lg-2" type="button">Change</button>
 </div>

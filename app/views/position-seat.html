@@ -6,10 +6,11 @@
         <li class="li-menu-train" ng-click="changeJourneyReturn()">Return</li>
       </ul>
       <div class="div-list-train " ng-animate='animate'>
-      <div class="div-train col-xs-12 col-sm-12 col-md-2 col-lg-2" ng-animate='animate' ng-repeat=" train in trainsActive" ng-click="changeListCoach(this)">
+      <div class="div-train col-xs-12 col-sm-12 col-md-2 col-lg-2" ng-animate='animate'
+        ng-repeat=" train in trainsActive track by $index" ng-click="changeListCoach(this)">
         <span >ID: {{train._id}} </span><br>
         <span >Name: {{train.title}} </span><br>
-        <span> Time: {{convertTime(time, currentTime) | date:'yyyy/MM/dd HH:mm:ss'}}</span><br>
+        <span> Time: {{showTime($index) | date:'yyyy/MM/dd HH:mm:ss'}}</span><br>
         <span> From:  {{getTimeDate(train._id, 'from')}}</span><br>
         <span> To:  {{getTimeDate(train._id, 'to')}}</span>
         <div class="select-train">
@@ -34,7 +35,7 @@
           <div class="div-seat-info" ng-click="chooseSeat(this)" >
             <span>Seat number {{seat.number}}</span><br>
             <span>{{coachActive.typeCoach}}</span><br>
-            <span>Price: {{coachActive.price}}</span><br>
+            <span>Price: {{coachActive.price | separatorThousand}}vnđ</span><br>
           </div>
         </div>
     </div>
@@ -49,7 +50,7 @@
             <span class="span-your-car">Coach {{ticket.coachTrain}}</span><br>
             <span class="span-your-car">Seat number {{ticket.seatNumber}}</span><br>
             <span class="span-your-car">{{ticket.typeSeat}}</span><br>
-            <span class="span-your-car">Price: {{ticket.price}}</span>
+            <span class="span-your-car">Price: {{ticket.price | separatorThousand}}nvđ</span>
         </div>
 
     </div>

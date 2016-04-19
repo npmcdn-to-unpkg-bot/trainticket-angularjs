@@ -1,8 +1,8 @@
-<div class="container div-container"  >
-  <div class="" ng-class="showEvent">
-    No Event
+<div class="container div-container">
+  <div class="" ng-show="hideEvent">
+    <h1 class="event-p">No event for today</h1>
   </div>
-  <div class="row">
+  <div class="row" ng-show="showEvent">
 
     <div class="col-xs-12 col-ms-12 col-md-2 col-lg-2">
 
@@ -18,12 +18,11 @@
       <table class="table">
         <tr>
           <td>Time Begin</td>
-          <td>
-          {{timeBegin}}</td>
+          <td>{{ dateBeginEvent | date : "dd MMMM, y" }}</td>
         </tr>
         <tr>
           <td>Time End</td>
-          <td>{{timeEnd}}</td>
+          <td>{{ dateEndEvent | date : "dd MMMM, y" }}</td>
         </tr>
         <tr>
           <td>Object:</td>
@@ -42,3 +41,4 @@
     <div class="col-xs-12 col-ms-12 col-md-2 col-lg-2"></div>
   </div>
 </div>
+<script type="text/javascript" src="libs/js/find-train/find-train.js"></script>

@@ -86,7 +86,8 @@
                     that.last_val = that.val();
                     that.sc.hide();
                     setTimeout(function(){ that.sc.hide(); }, 350); // hide suggestions on fast input
-                } else if (!that.is(':focus')) setTimeout(function(){ that.focus(); }, 20);
+                }
+                // else if (!that.is(':focus')) setTimeout(function(){ that.focus(); }, 20);
             });
 
             if (!o.minChars) that.on('focus.autocomplete', function(){ that.last_val = '\n'; that.trigger('keyup.autocomplete'); });
@@ -169,3 +170,4 @@
         onSelect: function(e, term, item){}
     };
 }(jQuery));
+//fix line 90

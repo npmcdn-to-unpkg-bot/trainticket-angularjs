@@ -178,6 +178,16 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
     // update view seat when the customer clicked remove the ticket
     filterListSeat();
   }
+  $scope.showTime =  function(index){
+    // ShowLog.show(index, envi);
+    if(!isReturn){
+      // ShowLog.show(listTimeTrainJourney[index], envi);
+      return convertTimeVar($scope.time, listTimeTrainJourney[index].timeStart);
+    }else{
+      ShowLog.show(listTimeTrainJourneyReturn[index], envi);
+      return convertTimeVar($scope.time, listTimeTrainJourneyReturn[index].timeStart);
+    }
+  }
   /**
    * lick choose journey to view train
    * @return none
@@ -223,7 +233,7 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
             case 'to':
               return listTimeTrainJourneyReturn[i].toStation;
             case 'time':
-              var hour = $window.Math.round(Number(listTimeTrainJourneyReturn[i].timeStart)/60);
+              var hour = $window.Math.floor(Number(listTimeTrainJourneyReturn[i].timeStart)/60);
               var min  = Number(listTimeTrainJourneyReturn[i].timeStart) % 60;
               if (min == 0)
                 min ="00";
@@ -242,7 +252,7 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
             case 'to':
               return listTimeTrainJourney[i].toStation;
             case 'time':
-              var hour = $window.Math.round(listTimeTrainJourney[i].timeStart/60);
+              var hour = $window.Math.floor(listTimeTrainJourney[i].timeStart/60);
               var min  = listTimeTrainJourney[i].timeStart % 60;
               return hour + ":" + min;
           }
@@ -466,7 +476,7 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
         var m = date.getMonth();
         var y = date.getFullYear();
         var d = date.getDate();
-        var h =  $window.Math.round(Number(hour)/60);
+        var h =  $window.Math.floor(Number(hour)/60);
         var min = Number(hour) % 60;
         return (new Date(y, m, d, h, min, 0, 0).getTime());
     }
@@ -480,7 +490,7 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
       journey = localStorageService.get('journey');
       journeyReturn = localStorageService.get('journeyReturn');
       ShowLog.show(journey,envi);
-      if((typeof journey) != 'string'){
+      if((journey !=null)  && (typeof journey) != 'string'){
         if(journey.listTrain.length >0){
                     // set default train
           $scope.trainsActive = journey.listTrain;
@@ -494,11 +504,13 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
           //time
           $scope.time         = journey.time;
           journey = getTimeTrain(journey, 0);
+          ShowLog.show(listTimeTrainJourney, envi);
           if((typeof journeyReturn)      != 'undefined'
               && (typeof journeyReturn)  != 'string'
               && (journeyReturn)  != null){
               if(journeyReturn.listTrain.length > 0){
                 journeyReturn = getTimeTrain(journeyReturn, 1);
+                ShowLog.show(listTimeTrainJourneyReturn, envi);
               }
           }
           // timestart

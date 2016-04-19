@@ -37,13 +37,13 @@
             <th>Object</th>
             <th>Type seat</th>
             <th>Infor ticket</th>
-            <th>Date buy</th>
+            <th> Date buy </td>
             <th>State</th>
             <th>Into money</th>
           </thead>
           <tbody>
             <tr>
-              <td colspan="7" class="text_train"><b>{{TrainJourney}} {{datego | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
+              <td colspan="7" class="text_train"><b>{{TrainJourney}}<br> {{datego | date:'yyyy-MM-dd HH:mm:ss'}}</b></td>
             </tr>
             <tr>
               <td>{{namecustomer}}</td>
@@ -53,11 +53,11 @@
               <td>{{inforticket}}</td>
               <td>{{datebuy | date:'yyyy-MM-dd HH:mm:ss'}}</td>
               <td>{{state}}</td>
-              <td>{{money}}</td>
+              <td>{{money | separatorThousand}}vnđ</td>
             </tr>
             <tr>
               <td colspan="7" style="text-align: right;"><b>Total</b></td>
-              <td>{{TotalPrice}}</td>
+              <td>{{TotalPrice | separatorThousand}}vnđ</td>
             </tr>
 
           </tbody>
@@ -133,24 +133,6 @@
   </div>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 bt_print">
 <button type="button" class="btn btn-success bt_print" data-toggle="modal" data-target="#myModal" ng-click = "delete()"><span class="fa fa-trash"></span><b> Delete</b></button>
-  <!-- Modal -->
-  <!-- <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>This is a small modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   </div>
 </div>
   <div class="row">
@@ -161,13 +143,5 @@
       <p>You can contact the customer support center 19006469 for assistance. We serve you 24 hours a day and 7 days a week.</p>
     </div>
   </div>
-  <!-- <div class="row bt_ft">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 bt_print">
-      <button type="button" class="btn btn-success bt_print"><b>Print bill</b></button>
-    </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-      <button type="button" class="btn btn-success1 bt_back" onclick="window.document.location='#/home'"> <b>Back home</b></button>
-    </div>
-  </div> -->
 </div>
 </script>

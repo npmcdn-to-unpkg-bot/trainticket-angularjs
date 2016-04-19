@@ -49,12 +49,12 @@ Type: {{firstTicket.typeSeat}}"
                 <p>Time: {{firstTicket.date | date:'HH:mm:ss'}}</p>
               </div>
             </td>
-            <td>{{firstDefaultPrice}}</td>
-            <td>{{firstCustomerDiscount}}</td>
+            <td>{{firstDefaultPrice | separatorThousand}} vnđ</td>
+            <td>{{firstCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
-              {{firstEventsPrice}}
+              {{firstEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{firstDefaultPrice - firstCustomerDiscount}}</td>
+            <td >{{firstDefaultPrice - firstCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(1)'><image src="libs/img/del30.png"></button>
             </td>
@@ -87,12 +87,12 @@ Type: {{secondTicket.typeSeat}}"
               <p>Time: {{secondTicket.date | date:'HH:mm:ss'}}</p>
             </div>
             </td>
-            <td>{{secondDefaultPrice}}</td>
-            <td>{{secondDiscout}}</td>
+            <td>{{secondDefaultPrice | separatorThousand}} vnđ</td>
+            <td>{{secondCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
-              {{secondCustomerDiscount}}
+              {{secondEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{secondDefaultPrice - secondCustomerDiscount}}</td>
+            <td >{{secondDefaultPrice - secondCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(2)'><image src="libs/img/del30.png"></button>
             </td>
@@ -124,12 +124,12 @@ Type: {{thirdTicket.typeSeat}}"
             <p>Time: {{thirdTicket.date | date:'HH:mm:ss'}}</p>
           </div>
             </td>
-            <td>{{thirdDefaultPrice}}</td>
-            <td>{{thirdCustomerDiscount}}</td>
+            <td>{{thirdDefaultPrice | separatorThousand}} vnđ</td>
+            <td>{{thirdCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
-              {{thirdEventsPrice}}
+              {{thirdEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{thirdDefaultPrice - thirdCustomerDiscount}}</td>
+            <td >{{thirdDefaultPrice - thirdCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(3)'><image src="libs/img/del30.png"></button>
             </td>
@@ -193,7 +193,7 @@ Type: {{thirdTicket.typeSeat}}"
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <label>Email</label>
-        <input ng-disabled="isDisabledElement" ng-model= "firstEmailCompany" type="text" class="form-control" placeholder="">
+        <input ng-disabled="isDisabledElement"  ng-model= "firstEmailCompany" type="email" class="form-control" placeholder="">
       </div>
       <br>
     </div>

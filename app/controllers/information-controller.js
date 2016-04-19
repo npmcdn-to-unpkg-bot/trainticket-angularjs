@@ -1,5 +1,5 @@
-routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URLServices ,$scope, $rootScope, $http, $state) {
-
+routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URLServices, $scope, $rootScope, $http, $state) {
+  changeMainMenus(1);
   // set active menu
   $scope.activeInfor = "li-active-menu";
   ShowLog.show($scope.activeInfor, envi);
@@ -9,6 +9,7 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
 
   ShowLog.show($scope.activeInfor, envi);
   ShowLog.show($rootScope.title);
+
   function hidetext() {
     $scope.tickcode = "";
     $scope.seatcode = "";
@@ -27,22 +28,23 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
     $scope.taxnumber = "";
     $scope.addresscompany = "";
     $scope.emailcompany = "";
-    $scope.datebuy = "";
     $scope._idDelete = null;
     $scope._idSearch = null;
     $scope.datego = "";
+    $scope.datebuy = "";
 
   };
   $scope.search = function() {
-    if ($scope._idSearch == null) {
+    if (!$scope._idSearch) {
       BootstrapDialog.alert({
         title: 'Warrning',
         message: 'Please type ticket code'
       });
       hidetext();
     } else {
-      $http.post(URLServices.getURL('customer') +"/" + $scope._idSearch).success(function(response) {
-
+      $rootScope.showLoad = "show-load";
+      $http.post(URLServices.getURL('customer') + "/" + $scope._idSearch).success(function(response) {
+        $rootScope.showLoad = "hide-load";
         $scope.tickcode = response.ticket._id;
         $scope.seatcode = response.ticket.seatNumber;
         $scope.TrainJourney = response.ticket.startStation + " - " + response.ticket.endStation;
@@ -52,7 +54,7 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
         $scope.Indentitycard = response._id;
         $scope.object = response.ticket.object;
         $scope.typeseat = response.ticket.typeSeat;
-        // $scope.setValues = ", time: ";
+        $scope.datebuy = response.ticket.dateBuy;
         $scope.datego = response.ticket.date;
         $scope.inforticket = "Code train: " + response.ticket._idTrain + ", name train: " + response.ticket.nameTrain + ", coach: " + response.ticket.coachTrain;
         $scope.state = response.ticket.state;
@@ -64,7 +66,7 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
         $scope.emailcompany = response.company.emailCompany;
         $scope._idSearch = ""
       }).error(function(response) {
-        console.log($scope._idSearch + "sss");
+        $rootScope.showLoad = "hide-load";
         BootstrapDialog.show({
           title: 'Warrning',
           message: 'No ticket was found'
@@ -75,18 +77,22 @@ routerApp.controller('InformationController', function(ChangeInfor, ShowLog, URL
   };
 
   $scope.delete = function() {
-    if ($scope._idDelete == null) {
+    if (!$scope._idDelete) {
       BootstrapDialog.alert({
         title: 'Warrning',
         message: 'Please type ticket code'
       });
     } else {
-      $http.put(URLServices.getURL('customer') +"/"+ $scope._idDelete).success(function(response) {
+      $rootScope.showLoad = "show-load";
+      var ticket = "ticket";
+      $http.put(URLServices.getURL('customer'), { method: ticket, id_ticket: $scope._idDelete}).success(function(response) {
+        $rootScope.showLoad = "hide-load";
         BootstrapDialog.show({
           title: 'Sucessed',
           message: 'You have cacel completed ticket'
         });
       }).error(function(response) {
+        $rootScope.showLoad = "hide-load";
         BootstrapDialog.show({
           title: 'Warrning',
           message: 'No ticket was found'

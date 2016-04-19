@@ -186,22 +186,22 @@ html, body {
 }
 @media (max-width:400px) {
     .form-control {
-        width: 105% !important;
+        width: 105% ;
     }
 }
 @media (min-width: 401px) and (max-width: 750px) {
     input.form-control {
-        width: 102.5% !important;
+        width: 102.5% ;
     }
 }
 @media (min-width: 755px) and (max-width:990px) {
     input.form-control {
-        width: 102% !important;
+        width: 102% ;
     }
 }
 @media (min-width: 991px) {
     input.form-control {
-        width: 103% !important;
+        width: 103% ;
     }
 }
 .div-button-regist {
@@ -864,6 +864,7 @@ a:hover {
 .txt_height{
   height: 45px;
   color: #3452C7;
+  margin-right: 13px;
 }
 .deletetick{
   color: #F44336;
@@ -886,6 +887,11 @@ a:hover {
   font-weight: bold;
   font-size: 20px;
   margin-bottom: -30px;
+}
+#idtrain{
+  font-weight: normal;
+  font-size: 18px;
+  color: #000000;
 }
 
 /* ------------------------- css view -------------------------*/
@@ -1076,10 +1082,12 @@ color: #ae8e8e;
   background: #CCFF90;
   color: white;
 }
+.contact{
+  background: #F5F6F7;
+}
 /*contact*/
 .contactForm{
-    background-color: #D7D7E4;
-    padding-top: 10px;
+    background-color: #F5F6F7-top: 10px;
     padding-right: 30px
 }
 .btn.active, .btn:active, .open>.dropdown-toggle.btn {
@@ -1115,4 +1123,20 @@ color: #ae8e8e;
 /*override*/
 .control-label{
   text-align: left !important;
+}
+/*modal*/
+.modal-header, h4, .close {
+    text-align: center;
+    font-size: 30px;
+}
+.form-login {
+    padding-right: 15px;
+}
+.event-p{
+    font-weight: bold;
+    color: #EF5350;
+    text-align: center;
+}
+.rowbutton{
+  background: #BBDEFB;
 }

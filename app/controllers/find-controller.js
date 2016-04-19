@@ -1,7 +1,9 @@
 routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, URLServices, $scope, $rootScope, $http, $state, $q, localStorageService) {
     //change infor
     ChangeInfor.change('main');
-    var envi = 'product';
+    // change acitve menu when customer edit
+    changeMainMenus(0);
+    var envi = 'dev';
     $scope.journey = {
         "listTrain": [],
         "fromStation": '',
@@ -29,6 +31,38 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
     $scope.disbaleRoundTripB = function() {
             $scope.activeButton = false;
         }
+        var point = ['Quy Nhon', 'Sai Gon', 'Phan Thiet', 'Da Nang', 'Ha Noi'];
+       var checkInputGo = false;
+       var checkInputTo = false;
+       $scope.blurInputGo = function() {
+           var go = document.getElementById('from').value;
+           for (i = 0; i < point.length; i++) {
+               if (point[i] == go) {
+                   checkInputGo = true;
+               }
+           }
+           if (checkInputGo != true) {
+               toastr.error("Station go mismatch");
+           }
+       }
+       $scope.focusInputGo = function() {
+           checkInputGo = false;
+       }
+
+       $scope.blurInputTo = function() {
+           var to = document.getElementById('to').value;
+           for (i = 0; i < point.length; i++) {
+               if (point[i] == to) {
+                   checkInputTo = true;
+               }
+           }
+           if (checkInputTo != true) {
+               toastr.error("Station to mismatch");
+           }
+       }
+       $scope.focusInputTo = function() {
+               checkInputTo = false;
+           }
         //sendResult
     $scope.eventSubmit = function() {
         $scope.listTrain1;
@@ -46,15 +80,9 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
           dateOneWay.setHours(currentDate.getHours());
           dateOneWay.setMinutes(currentDate.getMinutes());
         }
-            ShowLog.show(dateOneWay +" go after", envi);
-        // ShowLog.show(dateOneWay+" "+ dateRountrip, envi);
-        if (!go) {
-              $scope.classInputGo = "class-boder-red";
-              toastr.error("Please enter your place of departure!!!");
-          } else if (!to) {
-              $scope.classInputTo = "class-boder-red";
-              toastr.error("Please enter your place of  destination!!!");
-          } else if (go == to) {
+
+        ShowLog.show(dateOneWay+" "+ dateRountrip, envi);
+        if (go == to) {
               toastr.error("The departure, the destination must be different!!!");
           } else if (!dateGo || !dateTo) {
               toastr.error("Please choose a date!!!");
