@@ -30,7 +30,7 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
   // show lable when the list seat is empty
   $scope.show = 'lbl-die';
   // show log console
-  var envi = 'dev';
+  var envi = 'product';
   // change information when change state
   ChangeInfor.change('position');
   /*
@@ -543,8 +543,8 @@ routerApp.controller('PositionController',  function(ChangeInfor, URLServices, S
       $http.get(URLServices.getURL('event'))
               .success(function(response, status) {
                 var listEvents = response;
-                ShowLog.show('get event');
-                ShowLog.show(response);
+                ShowLog.show('get event', envi);
+                ShowLog.show(response, envi);
                 $scope.$emit('eventList', { listEvent: listEvents });
               }).error(function (data, status, header, config) {
 

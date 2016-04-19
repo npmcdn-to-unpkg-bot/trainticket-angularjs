@@ -52,9 +52,17 @@ Type: {{firstTicket.typeSeat}}"
             <td>{{firstDefaultPrice | separatorThousand}} vnđ</td>
             <td>{{firstCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
+              <div ng-repeat="event in getInforEvent(firstTicketEventObject, 1 ) track by $index">
+                <span style="text-decoration: underline; color:blue;"
+                      title="{{event.name}}: from {{event.timeBegin | date:'yyyy/MM/dd'}} to {{event.timeEnd | date:'yyyy/MM/dd'}}">
+                  {{event._id}}
+                </span>
+                <br>
+              </div>
+              
               {{firstEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{firstDefaultPrice - firstCustomerDiscount | separatorThousand}} vnđ</td>
+            <td >{{firstDefaultPrice - firstCustomerDiscount - firstEventsPrice | separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(1)'><image src="libs/img/del30.png"></button>
             </td>
@@ -90,9 +98,16 @@ Type: {{secondTicket.typeSeat}}"
             <td>{{secondDefaultPrice | separatorThousand}} vnđ</td>
             <td>{{secondCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
+              <div ng-repeat="event in getInforEvent(secondTicketEventObject, 2) track by $index">
+                <span style="text-decoration: underline; color:blue;"
+                      title="{{event.name}}: from {{event.timeBegin | date:'yyyy/MM/dd'}} to {{event.timeEnd | date:'yyyy/MM/dd'}}">
+                  {{event._id}}
+                </span>
+                <br>
+              </div>
               {{secondEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{secondDefaultPrice - secondCustomerDiscount | separatorThousand}} vnđ</td>
+            <td >{{secondDefaultPrice - secondCustomerDiscount - secondEventsPrice| separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(2)'><image src="libs/img/del30.png"></button>
             </td>
@@ -127,9 +142,16 @@ Type: {{thirdTicket.typeSeat}}"
             <td>{{thirdDefaultPrice | separatorThousand}} vnđ</td>
             <td>{{thirdCustomerDiscount | separatorThousand}} vnđ</td>
             <td>
+              <div ng-repeat="event in getInforEvent(thirdTicketEventObject, 3 ) track by $index">
+                <span style="text-decoration: underline; color:blue;"
+                      title="{{event.name}}: from {{event.timeBegin | date:'yyyy/MM/dd'}} to {{event.timeEnd | date:'yyyy/MM/dd'}}">
+                  {{event._id}}
+                </span>
+                <br>
+              </div>
               {{thirdEventsPrice | separatorThousand}} vnđ
             </td>
-            <td >{{thirdDefaultPrice - thirdCustomerDiscount | separatorThousand}} vnđ</td>
+            <td >{{thirdDefaultPrice - thirdCustomerDiscount - thirdEventsPrice| separatorThousand}} vnđ</td>
             <td>
               <button ng-disabled="isDisabledElement" type="button"  class="btn btn-link" ng-click='removeTicket(3)'><image src="libs/img/del30.png"></button>
             </td>

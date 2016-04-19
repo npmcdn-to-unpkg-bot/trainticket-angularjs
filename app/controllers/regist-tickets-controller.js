@@ -49,7 +49,7 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
     // value default: 3 element
   var listRegisterCustomer = [3];
 
-  $scope.listEventRegister = [];
+  var listEventRegister = [];
 
   // number ticket when customer register
   var ticketRegisterNumber = 0;
@@ -93,8 +93,11 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
   // list event show
   $scope.firstEventsPrice     = 0;
   $scope.secondEventsPrice    = 0;
-  $scope.thirdSEventsPrice    = 0;
-
+  $scope.thirdEventsPrice    = 0;
+  // index show event for page view
+  $scope.firstTicketEventObject     = 0;
+  $scope.secondTicketEventObject    = 0;
+  $scope.thirdTicketEventObject     = 0;
   // text of the submit button
   $scope.btnContent = 'Register';
   /* time keep list ticket for customer register
@@ -428,7 +431,15 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
         saveImage();
       }
     }
-
+    /**
+     * call when load page
+     * @param  {Number} indexObject position of the list objects
+     * @param  {Number} indexTicket position of the ticket
+     * @return {[type]}             [description]
+     */
+    $scope.getInforEvent =  function(indexObject, indexTicket){
+      return getInforEventVar(indexObject, indexTicket);
+    }
     /*
     * METHOD VAR
     */
@@ -436,6 +447,99 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
     *
     * @return {[type]} [description]
     */
+   /**
+    * get event from list object
+    * @param  {Number} indexObject position of the object into list objects
+    * @param  {Number} indexTicket position of the ticket
+    * @return {[type]}             [description]
+    */
+   var getInforEventVar = function(indexObject, indexTicket){
+    //  ShowLog.show('eventInfor', envi);
+    //  ShowLog.show(indexTicket, envi);
+     //change price event and sub price for each ticket
+     var events = $scope.objects[indexObject].event;
+     if(events.length > 0){
+       switch (indexTicket) {
+         case 1:
+            // reset price
+            $scope.firstEventsPrice = 0;
+            for(var i = 0; i< events.length; i++){
+              // get price from object
+              var objectsOfEvent  = events[i].objects;
+              var priceDeal = 0;
+              for(var j = 0; j <  objectsOfEvent.length; j++){
+                if(objectsOfEvent[j].type == $scope.selectFirstTicket){
+                  priceDeal = objectsOfEvent[j].price;
+                  break;
+                }
+              }
+              $scope.firstEventsPrice += $scope.firstDefaultPrice * Number(priceDeal);
+            }
+           break;
+         case 2:
+         // reset price
+         $scope.secondEventsPrice = 0;
+         for(var i = 0; i< events.length; i++){
+           // get price from object
+           var objectsOfEvent  = events[i].objects;
+           var priceDeal = 0;
+           for(var j = 0; j <  objectsOfEvent.length; j++){
+             if(objectsOfEvent[j].type == $scope.selectSecondTicket){
+               priceDeal = objectsOfEvent[j].price;
+               break;
+             }
+           }
+           $scope.secondEventsPrice += $scope.secondDefaultPrice * Number(priceDeal);
+         }
+         break;
+         case 3:
+         // reset price
+         $scope.thirdEventsPrice = 0;
+         for(var i = 0; i< events.length; i++){
+           // get price from object
+           var objectsOfEvent  = events[i].objects;
+           var priceDeal = 0;
+           for(var j = 0; j <  objectsOfEvent.length; j++){
+             if(objectsOfEvent[j].type == $scope.selectThirdTicket){
+               priceDeal = objectsOfEvent[j].price;
+               break;
+             }
+           }
+           $scope.thirdEventsPrice += $scope.thirdDefaultPrice * Number(priceDeal);
+         }
+         break;
+       }
+     }else{
+       switch (indexTicket) {
+         case 1:
+           $scope.firstEventsPrice = 0;
+           break;
+         case 1:
+           $scope.secondEventsPrice = 0;
+           break;
+         case 1:
+           $scope.secondEventsPrice = 0;
+           break;
+       }
+     }
+     // update price of the ticket
+     $scope.firstTicket.price = Number($scope.firstDefaultPrice)
+                                - Number($scope.firstCustomerDiscount)
+                                - Number($scope.firstEventsPrice);
+     // update price of the ticket
+     $scope.secondTicket.price = Number($scope.secondDefaultPrice)
+                                - Number($scope.secondCustomerDiscount)
+                                - Number($scope.secondEventsPrice);
+     // update price of the ticket
+     $scope.thirdTicket.price = Number($scope.thirdDefaultPrice)
+                                - Number($scope.thirdCustomerDiscount)
+                                - Number($scope.thirdEventsPrice);
+     // update total price
+     $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount - $scope.thirdEventsPrice
+                   + $scope.secondDefaultPrice - $scope.secondCustomerDiscount - $scope.secondEventsPrice
+                   + $scope.firstDefaultPrice - $scope.firstCustomerDiscount - $scope.firstEventsPrice;
+     return events;
+   }
    var waitReigsterFromServer =  function(){
      // loop for wait response from the server
      var timeLeft = 1000;
@@ -646,8 +750,10 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
            $state.go('main.home');
          }
      // update total price
-     $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount + $scope.secondDefaultPrice - $scope.secondCustomerDiscount
-                   + $scope.firstDefaultPrice - $scope.firstCustomerDiscount;
+    //  ShowLog.show($scope.thirdEventsPrice +" "+ $scope.secondEventsPrice +" "+$scope.firstEventsPrice, envi);
+     $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount - $scope.thirdEventsPrice
+                   + $scope.secondDefaultPrice - $scope.secondCustomerDiscount - $scope.secondEventsPrice
+                   + $scope.firstDefaultPrice - $scope.firstCustomerDiscount - $scope.firstEventsPrice;
     }
 
     /**
@@ -751,25 +857,32 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
         case 'first':
           // get value had chosen by customer.
           var objectName = $scope.selectFirstTicket;
-          ShowLog.show('select');
-          ShowLog.show(objectName, envi);
-          ShowLog.show((objectName == 'Old person') + "old ", envi);
-          ShowLog.show((objectName == 'Student') + "student ", envi);
+          // ShowLog.show('select');
+          // ShowLog.show(objectName, envi);
+          // ShowLog.show((objectName == 'Old person') + "old ", envi);
+          // ShowLog.show((objectName == 'Student') + "student ", envi);
           if(objectName == 'Old person'){
+            // change event follow object
+            $scope.firstTicketEventObject    = 2;
             $scope.firstCustomerDiscount      = $scope.objects[2].discount;
           }else if( objectName == 'Student'){
+            // change event follow object
+            $scope.firstTicketEventObject    = 1;
             $scope.firstCustomerDiscount      = $scope.objects[1].discount;
           }else{// adult
             objectName = 'Adult';
+            // change event follow object
+            $scope.firstTicketEventObject    = 0;
             $scope.firstCustomerDiscount      = $scope.objects[0].discount;
           }
-          ShowLog.show($scope.firstCustomerDiscount + "discount ", envi);
+          // ShowLog.show($scope.firstCustomerDiscount + "discount ", envi);
           // calculate discount
           $scope.firstCustomerDiscount =  Number($scope.firstDefaultPrice) * Number($scope.firstCustomerDiscount) ;
-          ShowLog.show($scope.firstCustomerDiscount + "discount ", envi);
+          // ShowLog.show($scope.firstCustomerDiscount + "discount ", envi);
           // update price of the ticket
-          $scope.firstTicket.price = Number($scope.firstDefaultPrice) - Number($scope.firstCustomerDiscount);
-          ShowLog.show($scope.firstTicket.price + "discount ", envi);
+          $scope.firstTicket.price = Number($scope.firstDefaultPrice) - Number($scope.firstCustomerDiscount)
+                                     - Number($scope.firstEventsPrice);
+          // ShowLog.show($scope.firstTicket.price + "discount ", envi);
           // update object of the tikcet
           $scope.firstTicket.object = objectName;
           break;
@@ -777,39 +890,60 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
 
             var objectName = $scope.selectSecondTicket;
           if( objectName == 'Old person'){
+              // change event follow object
+              $scope.secondTicketEventObject    = 2;
               $scope.secondCustomerDiscount      = $scope.objects[2].discount;
             }else if( objectName == 'Student'){
+                // change event follow object
+                $scope.secondTicketEventObject     = 1;
               $scope.secondCustomerDiscount      = $scope.objects[1].discount;
             }else{// adult
+                // change event follow object
+                $scope.secondTicketEventObject     = 0;
               objectName = 'Adult';
               $scope.secondCustomerDiscount      = $scope.objects[0].discount;
             }
-            $scope.secondCustomerDiscount =  Number($scope.secondDefaultPrice) * Number($scope.secondCustomerDiscount) ;
+            $scope.secondCustomerDiscount =  Number($scope.secondDefaultPrice)
+                                              * Number($scope.secondCustomerDiscount) ;
             // update price of the ticket
-            $scope.secondTicket.price = Number($scope.secondDefaultPrice) - Number($scope.secondCustomerDiscount);
+            $scope.secondTicket.price = Number($scope.secondDefaultPrice)
+                                        - Number($scope.secondCustomerDiscount)
+                                        - Number($scope.secondEventsPrice);
+
             // update object of the tikcet
             $scope.secondTicket.object = objectName;
           break;
         case 'third':
             var objectName = $scope.selectThirdTicket;
             if( objectName == 'Old person'){
+                // change event follow object
+                $scope.thirdTicketEventObject     = 2;
               $scope.thirdCustomerDiscount      = $scope.objects[2].discount;
             }else if( objectName == 'Student'){
+                // change event follow object
+                  $scope.thirdTicketEventObject     = 1;
               $scope.thirdCustomerDiscount      = $scope.objects[1].discount;
             }else{// adult
+              // change event follow object
+              $scope.thirdTicketEventObject     = 0;
               objectName = 'Adult';
               $scope.thirdCustomerDiscount      = $scope.objects[0].discount;
             }
-            $scope.thirdCustomerDiscount =  Number($scope.thirdDefaultPrice) * Number($scope.thirdCustomerDiscount);
+            $scope.thirdCustomerDiscount =  Number($scope.thirdDefaultPrice)
+                                            * Number($scope.thirdCustomerDiscount);
             // update price of the ticket
-            $scope.thirdTicket.price = Number($scope.thirdDefaultPrice) - Number($scope.thirdCustomerDiscount);
+            $scope.thirdTicket.price = Number($scope.thirdDefaultPrice)
+                                       - Number($scope.thirdCustomerDiscount)
+                                       - Number($scope.thirdEventsPrice);
+
             // update object of the tikcet
             $scope.thirdTicket.object = objectName;
           break;
       }
       // update total price
-      $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount + $scope.secondDefaultPrice - $scope.secondCustomerDiscount
-                    + $scope.firstDefaultPrice - $scope.firstCustomerDiscount;
+      $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount - $scope.thirdEventsPrice
+                    + $scope.secondDefaultPrice - $scope.secondCustomerDiscount - $scope.secondEventsPrice
+                    + $scope.firstDefaultPrice - $scope.firstCustomerDiscount - $scope.firstEventsPrice;
     }
 
     /**
@@ -951,54 +1085,74 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
       }else{
         $state.go('main.home');
       }
-      $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount + $scope.secondDefaultPrice - $scope.secondCustomerDiscount
-                    + $scope.firstDefaultPrice - $scope.firstCustomerDiscount;
+      // update total price
+      // ShowLog.show($scope.thirdEventsPrice +" "+ $scope.secondEventsPrice +" " +$scope.firstEventsPrice, envi);
+      $scope.total = $scope.thirdDefaultPrice - $scope.thirdCustomerDiscount - $scope.thirdEventsPrice
+                    + $scope.secondDefaultPrice - $scope.secondCustomerDiscount - $scope.secondEventsPrice
+                    + $scope.firstDefaultPrice - $scope.firstCustomerDiscount - $scope.firstEventsPrice;
     }
   /**
    * add events to type object of the ticket
    * @return none;
    */
     var addEventToObject =  function(){
-      if($scope.listEventRegister.length > 0){
-        var listEvent = $scope.listEventRegister;
+      if(listEventRegister.length > 0){
+        var listEvent = listEventRegister;
         for(var i = 0;  i< listEvent.length; i++){
           var objects = listEvent[i].objects;
           for(var j = 0; j < objects.length; j++){
             switch (objects[j].type) {
-              case 'adult':
-                $scope.objects[0].event.push(listEvent[i]);
+              case 'Adult':
+              // limit event for object
+                if(  $scope.objects[0].event.length <=2)
+                    $scope.objects[0].event.push(listEvent[i]);
                 break;
-              case 'children':
-                $scope.objects[1].event.push(listEvent[i]);
+              case 'Student':
+              // limit event for object
+              if(  $scope.objects[1].event.length <=2)
+                  $scope.objects[1].event.push(listEvent[i]);
                 break;
-              case 'student':
-                $scope.objects[2].event.push(listEvent[i]);
-                break;
-              case 'oldperson':
-                $scope.objects[3].event.push(listEvent[i]);
+              case 'Old person':
+              // limit event for object
+              if(  $scope.objects[2].event.length <=2)
+                  $scope.objects[2].event.push(listEvent[i]);
                 break;
 
             }
           }
         }
       }
+      ShowLog.show('object event', envi);
+      ShowLog.show($scope.objects, envi);
     }
     /**
      * filter the event died and remove them.
      * @return none;
      */
     var filterEvent = function(){
-      if($scope.listEventRegister.length > 0){
-        var listEvent = JSON.parse( JSON.stringify($scope.listEventRegister));
-        $scope.listEventRegister = [];
+      // ShowLog.show('regist', envi);
+      listEventRegister = $scope.listEvent;
+      // ShowLog.show('before', envi);
+      //  ShowLog.show($scope.listEvent, envi);
+      //  ShowLog.show(listEventRegister, envi);
+      if(listEventRegister.length > 0){
+        var listEvent = JSON.parse( JSON.stringify(listEventRegister));
+        listEventRegister = [];
         for(var i = 0;  i< listEvent.length; i++){
           var endTime =  listEvent[i].timeEnd;
           var startTime =  listEvent[i].timeBegin;
           var dateNow =  new Date().getTime();
           if((Number(endTime) >= Number(dateNow)) &&  (Number(startTime) <= Number(dateNow))){
-            $scope.listEventRegister.push(listEvent[i]);
+            listEventRegister.push(listEvent[i]);
           }
         }
+        // ShowLog.show(listEventRegister, envi);
+      }
+      // ShowLog.show('after', envi);
+       ShowLog.show(listEventRegister, envi);
+      if(listEventRegister.length > 0){
+        // add event to each object
+        addEventToObject();
       }
     }
     /**
@@ -1043,4 +1197,5 @@ routerApp.controller('RegistTicketsController',  function(ChangeInfor, ShowLog, 
      */
     getTicket();
     timeKeepTicket();
+    filterEvent();
 });

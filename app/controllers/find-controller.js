@@ -31,40 +31,48 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
     $scope.disbaleRoundTripB = function() {
             $scope.activeButton = false;
         }
-        var point = ["Ha Noi","Sai Gon" ,"Nha Trang","Quy Nhon","Da Nang","Tam Ky","Hue","Dong Hoi","Quang Tri"
-                        ,"Nam Dinh","Vinh" ,"Thanh Hoa","Ha Long","Mao Khue","Bien Hoa","Tuy Hoa","Dieu Tri"
-                        ,"Quy Nhon","Quang Ngai","Bong Son","Binh Thuan","Phan Thiet"];
-       var checkInputGo = false;
-       var checkInputTo = false;
-       $scope.blurInputGo = function() {
-           var go = document.getElementById('from').value;
-           for (i = 0; i < point.length; i++) {
-               if (point[i] == go) {
-                   checkInputGo = true;
-               }
-           }
-           if (checkInputGo != true) {
-               toastr.error("Station go mismatch");
-           }
-       }
-       $scope.focusInputGo = function() {
-           checkInputGo = false;
-       }
+    var point = ["Ha Noi","Sai Gon" ,"Nha Trang","Quy Nhon","Da Nang","Tam Ky","Hue","Dong Hoi","Quang Tri"
+                    ,"Nam Dinh","Vinh" ,"Thanh Hoa","Ha Long","Mao Khue","Bien Hoa","Tuy Hoa","Dieu Tri"
+                    ,"Quy Nhon","Quang Ngai","Bong Son","Binh Thuan","Phan Thiet"];
+                    var checkInputGo = false;
+                 var checkInputTo = false;
+                 $scope.blurInputGo = function() {
+                     var go = (document.getElementById('from').value).toLowerCase();
+                     var to = (document.getElementById('to').value).toLowerCase();
+                     for (i = 0; i < point.length; i++) {
+                         pointElement = point[i].toLowerCase();
+                         if ((pointElement.includes(go) == true) && (pointElement != to)) {
+                             document.getElementById('from').value = point[i];
+                             checkInputGo = true;
+                             break;
+                         }
+                     }
+                     if (checkInputGo != true) {
+                         toastr.error("Station go mismatch");
+                     }
+                 }
+                 $scope.focusInputGo = function() {
+                     checkInputGo = false;
+                 }
 
-       $scope.blurInputTo = function() {
-           var to = document.getElementById('to').value;
-           for (i = 0; i < point.length; i++) {
-               if (point[i] == to) {
-                   checkInputTo = true;
-               }
-           }
-           if (checkInputTo != true) {
-               toastr.error("Station to mismatch");
-           }
-       }
-       $scope.focusInputTo = function() {
-               checkInputTo = false;
-           }
+                 $scope.blurInputTo = function() {
+                     var go = (document.getElementById('from').value).toLowerCase();
+                     var to = (document.getElementById('to').value).toLowerCase();
+                     for (i = 0; i < point.length; i++) {
+                         pointElement = point[i].toLowerCase();
+                         if ((pointElement.includes(to) == true) && (pointElement != go)) {
+                             document.getElementById('to').value = point[i];
+                             checkInputTo = true;
+                             break;
+                         }
+                     }
+                     if (checkInputTo != true) {
+                         toastr.error("Station to mismatch");
+                     }
+                 }
+                 $scope.focusInputTo = function() {
+                         checkInputTo = false;
+                     }
         //sendResult
     $scope.eventSubmit = function() {
         $scope.listTrain1;
@@ -84,7 +92,13 @@ routerApp.controller('FindController', function(ChangeInfor, toastr, ShowLog, UR
         }
 
         ShowLog.show(dateOneWay+" "+ dateRountrip, envi);
-        if (go == to) {
+        if (!go) {
+            // $scope.classInputGo = "class-boder-red";
+            toastr.error("Please enter your place of departure!!!");
+        } else if (!to) {
+            $scope.classInputTo = "class-boder-red";
+            toastr.error("Please enter your place of  destination!!!");
+        } else if (go == to) {
               toastr.error("The departure, the destination must be different!!!");
           } else if (!dateGo || !dateTo) {
               toastr.error("Please choose a date!!!");
