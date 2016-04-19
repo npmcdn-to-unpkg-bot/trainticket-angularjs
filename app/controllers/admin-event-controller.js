@@ -1,4 +1,4 @@
-routerApp.controller('adminEventController', function($scope, $http, $state, showLog,  URLServices, toastr) {
+routerApp.controller('adminEventController', function($scope, $http, $state, ShowLog,  URLServices, toastr) {
     $scope.showAddEvent = false;
     $http
         .get( URLServices.getURL('event'))
